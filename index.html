@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Nischay ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0; padding: 0; height: 100vh; display: flex;
+            justify-content: center; align-items: center;
+            background: #ffdde1;
+            background: linear-gradient(315deg, #ffdde1 0%, #ee9ca7 74%);
+            font-family: 'Poppins', sans-serif; overflow: hidden; position: relative;
+        }
+
+        #audio-unlock {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 154, 162, 0.95); z-index: 100;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; cursor: pointer; text-align: center; padding: 20px;
+        }
+
+        .container {
+            text-align: center; background: rgba(255, 255, 255, 0.85);
+            padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 10; max-width: 85%; width: 350px; backdrop-filter: blur(5px);
+            border: 2px solid #fff; display: none;
+        }
+
+        h1 { font-family: 'Pacifico', cursive; color: #ff4d6d; font-size: 2.2rem; margin-bottom: 15px; }
+        
+        .buttons { display: flex; justify-content: center; gap: 15px; position: relative; min-height: 60px; margin-top: 20px; }
+
+        button {
+            padding: 10px 25px; font-size: 1rem; border: none; border-radius: 50px;
+            cursor: pointer; font-weight: 600;
+        }
+
+        #yesBtn { background-color: #ff4d6d; color: white; }
+        #noBtn { background-color: #e0e0e0; color: #333; position: absolute; transition: all 0.2s ease; }
+
+        #success-message { display: none; flex-direction: column; align-items: center; }
+        
+        /* PHOTO STYLING */
+        .couple-photo {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .big-text { font-family: 'Pacifico', cursive; color: #ff4d6d; font-size: 2.5rem; margin: 10px 0; }
+        
+        .heart-bg {
+            position: absolute; color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem; animation: float 6s linear infinite; z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="audio-unlock">
+        <h1 style="color: white;">For Nischay...</h1>
+        <p style="color: white; font-size: 1.2rem;">Tap to open your surprise ❤️</p>
+    </div>
+
+    <div id="hearts-container"></div>
+
+    <div class="container" id="main-content">
+        <div id="question-box">
+            <h1>Will you be my Valentine? 🌹</h1>
+            <div class="buttons">
+                <button id="yesBtn">Yes!</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div id="success-message">
+            <img src="us.jpg" alt="Our Photo" class="couple-photo">
+            
+            <div class="big-text">I knew it!</div>
+            <div style="font-size: 1.3rem; color: #ff4d6d;">I Love You ❤️</div>
+        </div>
+    </div>
+
+    <audio id="romanticMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('romanticMusic');
+        const unlockScreen = document.getElementById('audio-unlock');
+        const mainContent = document.getElementById('main-content');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+
+        unlockScreen.addEventListener('click', () => {
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log("Audio play blocked"));
+            unlockScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+        });
+
+        function moveButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
+
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('question-box').style.display = 'none';
+            document.getElementById('success-message').style.display = 'flex';
+            
+            var end = Date.now() + (10 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        });
+
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            for(let i=0; i<15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('heart-bg');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+    </script>
+</body>
+</html>
